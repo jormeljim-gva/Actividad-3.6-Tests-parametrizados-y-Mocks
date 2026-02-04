@@ -36,7 +36,7 @@ class Ejemplo3Test {
             "6, 1222, '+'",
             "6, 5, '?'"
     })
-    void clasesEquivalentesNegativos(int numero, int numero2, char operador) {
+    void clasesEquivalentesErroneos(int numero, int numero2, char operador) {
         assertThrows(IllegalArgumentException.class, () -> {
             ejemplo3.calcula(numero, numero2, operador);
         });
