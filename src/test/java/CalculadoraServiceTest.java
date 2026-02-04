@@ -13,8 +13,6 @@ public class CalculadoraServiceTest {
         when(mockCalculadora.sumar(3, 2)).thenReturn(5);
         when(mockCalculadora.multiplicar(5, 2)).thenReturn(10);
 
-
-
         CalculadoraService service = new CalculadoraService(mockCalculadora);
         assertEquals(10, service.dobleDeLaSuma(3, 2));
     }
