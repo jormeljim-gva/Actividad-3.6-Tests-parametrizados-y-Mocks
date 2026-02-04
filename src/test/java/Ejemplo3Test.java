@@ -1,6 +1,8 @@
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -17,55 +19,52 @@ class Ejemplo3Test {
         ejemplo3 = null;
     }
 
-    @Test
-    void clasesEquivalencia() {
-        assertEquals(18, ejemplo3.calcula(12, 6, '+'));
-        assertEquals(6, ejemplo3.calcula(12, 6, '-'));
-        assertEquals(2, ejemplo3.calcula(12, 6, '/'));
-        assertEquals(72, ejemplo3.calcula(12, 6, '*'));
+    @ParameterizedTest
+    @CsvSource({"12, 6, '+', 18",
+            "12, 6, '-', 6",
+            "12, 6, '/', 2",
+            "12, 6, '*', 72"
+    })
+    void clasesEquivalentes(int numero, int numero2, char operador, int resultado) {
+        assertEquals(resultado, ejemplo3.calcula(numero, numero2, operador));
+    }
+
+    @ParameterizedTest
+    @CsvSource({"-4, 5, '+'",
+            "1002, 5, '+'",
+            "6, -5, '+'",
+            "6, 1222, '+'",
+            "6, 5, '?'"
+    })
+    void clasesEquivalentesNegativos(int numero, int numero2, char operador) {
         assertThrows(IllegalArgumentException.class, () -> {
-            ejemplo3.calcula(-4, 5, '+');
-        });
-        assertThrows(IllegalArgumentException.class, () -> {
-            ejemplo3.calcula(1002, 5, '+');
-        });
-        assertThrows(IllegalArgumentException.class, () -> {
-            ejemplo3.calcula(6, -5, '+');
-        });
-        assertThrows(IllegalArgumentException.class, () -> {
-            ejemplo3.calcula(6, 1222, '+');
-        });
-        assertThrows(IllegalArgumentException.class, () -> {
-            ejemplo3.calcula(6, 5, '?');
+            ejemplo3.calcula(numero, numero2, operador);
         });
     }
 
-    @Test
-    void valoresLimites() {
-        assertEquals(2, ejemplo3.calcula(1, 1, '+'));
-        assertEquals(0, ejemplo3.calcula(2, 2, '-'));
-        assertEquals(1, ejemplo3.calcula(999, 999, '/'));
-        assertEquals(996004, ejemplo3.calcula(998, 998, '*'));
-        assertThrows(IllegalArgumentException.class, () -> {
-            ejemplo3.calcula(0, 1, '+');
-        });
-
-        assertThrows(IllegalArgumentException.class, () -> {
-            ejemplo3.calcula(1000, 1, '+');
-        });
-
-        assertThrows(IllegalArgumentException.class, () -> {
-            ejemplo3.calcula(1, 0, '+');
-        });
-
-        assertThrows(IllegalArgumentException.class, () -> {
-            ejemplo3.calcula(1, 1000, '+');
-        });
-
-        assertThrows(IllegalArgumentException.class, () -> {
-            ejemplo3.calcula(1, 1, '?');
-        });
+    @ParameterizedTest
+    @CsvSource({
+            "1, 1, '+', 2",
+            "2, 2, '-', 0",
+            "999, 999, '/', 1",
+            "998, 998, '*', 996004"
+    })
+    void valoresLimite(int numero, int numero2, char operador, int resultado){
+        assertEquals(resultado, ejemplo3.calcula(numero, numero2, operador));
     }
 
+    @ParameterizedTest
+    @CsvSource({
+            "0, 1, '+'",
+            "1000, 1, '+'",
+            "1, 0, '+'",
+            "1, 1000, '+'",
+            "1, 1, '?'"
+    })
+    void valoresLimiteErroneos(int numero, int numero2, char operador){
+        assertThrows(IllegalArgumentException.class, () -> {
+            ejemplo3.calcula(numero, numero2, operador);
+        });
+    }
 
 }
